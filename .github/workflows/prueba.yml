@@ -1,0 +1,24 @@
+name: Comprobacion de Tokens
+
+on: [push]
+
+jobs:
+  verificar-tokens:
+    runs-on: self-hosted
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Comparar DEV_TOKEN contra LOCAL_DEV_TOKEN
+        env:
+          DEV_TOKEN_SECRET: ${{ secrets.DEV_TOKEN }}
+        shell: bash
+        run: |
+          echo "Verificando coincidencia de tokens..."
+          if [ "$DEV_TOKEN_SECRET" = "$LOCAL_DEV_TOKEN" ]; then
+            echo "SUCCESS: El DEV_TOKEN (Secret) coincide exactamente con LOCAL_DEV_TOKEN (Variable local)."
+            exit 0
+          else
+            echo "ERROR: El DEV_TOKEN no coincide con la variable LOCAL_DEV_TOKEN."
+            exit 1
+          fi
