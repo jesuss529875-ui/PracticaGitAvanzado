@@ -12,13 +12,16 @@ jobs:
       - name: Comparar DEV_TOKEN contra LOCAL_DEV_TOKEN
         env:
           DEV_TOKEN_SECRET: ${{ secrets.DEV_TOKEN }}
-        shell: bash
+        shell: powershell
         run: |
-          echo "Verificando coincidencia de tokens..."
-          if [ "$DEV_TOKEN_SECRET" = "$LOCAL_DEV_TOKEN" ]; then
-            echo "SUCCESS: El DEV_TOKEN (Secret) coincide exactamente con LOCAL_DEV_TOKEN (Variable local)."
-            exit 0
-          else
-            echo "ERROR: El DEV_TOKEN no coincide con la variable LOCAL_DEV_TOKEN."
-            exit 1
-          fi
+          Write-Host "Verificando coincidencia de tokens..."
+          $envSecret = $env:DEV_TOKEN_SECRET
+          $envLocal = $env:LOCAL_DEV_TOKEN
+
+          if ($envSecret -eq $envLocal) {
+              Write-Host "SUCCESS: El DEV_TOKEN (Secret) coincide exactamente con LOCAL_DEV_TOKEN (Variable local)."
+              exit 0
+          } else {
+              Write-Error "ERROR: El DEV_TOKEN no coincide con la variable LOCAL_DEV_TOKEN."
+              exit 1
+          }
