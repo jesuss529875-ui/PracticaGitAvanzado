@@ -23,7 +23,6 @@ jobs:
         env:
           DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
         run: |
-          # Simulamos la validación comparando el secreto con un valor que no coincide
           LOCAL_DEV_TOKEN="token_incorrecto_123"
           if [ "$DEV_TOKEN" != "$LOCAL_DEV_TOKEN" ]; then
             echo "Error: El token local no coincide con el secreto de desarrollo."
