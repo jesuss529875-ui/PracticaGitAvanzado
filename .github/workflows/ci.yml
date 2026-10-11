@@ -1,0 +1,23 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  updatereadme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Update README
+        run: echo "Actualizando README"
+
+  validate-dev:
+    needs: updatereadme
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Validate Dev
+        run: echo "Validando entorno de desarrollo"
