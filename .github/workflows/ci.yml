@@ -1,0 +1,41 @@
+name: CI Workflow
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  update-readme:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Actualizar README
+        shell: bash
+        run: |
+          if ! grep -q "AppVersion-0" README.md; then
+            echo "AppVersion-0" >> README.md
+          fi
+
+  validate-dev:
+    needs: update-readme
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Validar Token DEV
+        env:
+          DEV_SECRET: ${{ secrets.DEV_TOKEN }}
+        shell: bash
+        run: |
+          if [ "$DEV_SECRET" = "$LOCAL_DEV_TOKEN" ]; then
+            echo "SUCCESS: El DEV_TOKEN coincide con la variable LOCAL_DEV_TOKEN."
+            exit 0
+          else
+            echo "ERROR: El DEV_TOKEN no coincide con LOCAL_DEV_TOKEN."
+            exit 1
+          fi
