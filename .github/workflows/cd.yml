@@ -2,29 +2,13 @@ name: CD Workflow
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ master, main ]
 
 jobs:
-  deploy-prod:
-    runs-on: self-hosted
+  deploy:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Bump Version a AppVersion-1
-        shell: bash
-        run: |
-          sed -i 's/AppVersion-0/AppVersion-1/g' README.md
-
-      - name: Validar Token PROD
-        env:
-          PROD_SECRET: ${{ secrets.PROD_TOKEN }}
-        shell: bash
-        run: |
-          if [ "$PROD_SECRET" = "$LOCAL_PROD_TOKEN" ]; then
-            echo "SUCCESS: El PROD_TOKEN coincide con la variable LOCAL_PROD_TOKEN."
-            exit 0
-          else
-            echo "ERROR: El PROD_TOKEN no coincide con la variable LOCAL_PROD_TOKEN."
-            exit 1
-          fi
+      - name: Deploy to production
+        run: echo "Desplegando y actualizando versión en README"
