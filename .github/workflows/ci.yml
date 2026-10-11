@@ -19,5 +19,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Validate Dev
-        run: echo "Validando entorno de desarrollo"
+      - name: Validate Dev Token
+        run: |
+          echo "Comprobando token..."
+          exit 1
