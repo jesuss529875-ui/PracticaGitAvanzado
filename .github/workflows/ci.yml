@@ -19,5 +19,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Validate Dev
-        run: echo "Validando entorno de desarrollo"
+      - name: Validate Dev Token
+        env:
+          DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
+        run: |
+          LOCAL_DEV_TOKEN="token_incorrecto_123"
+          if [ "$DEV_TOKEN" != "$LOCAL_DEV_TOKEN" ]; then
+            echo "Error: El token local no coincide con el secreto de desarrollo."
+            exit 1
+          fi
